@@ -1,2 +1,2 @@
-# atividades-php-ti26
+# ti26-php
 
