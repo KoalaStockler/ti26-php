@@ -1,23 +1,37 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario</title>
-    <link rel="stylesheet" href="./css/style.css">
-</head>
-<body>
-    <section class="container">
-        <div>
-            <form action="./impressao.php" method="POST">
-                <input type="text" placeholder="Nome" id="name" name="txtName">
-                <input type="text" placeholder="Usuário" id="user" name="txtUser">
-                <input type="number" placeholder="Telefone" id="tell" name="txtTell">
-                <input type="password" placeholder="Senha" id="password" name="txtPassword">
-                <input type="password" placeholder="Confirmar senha" id="passwordConfirm" name="txtConfirm">
-                <button type="submit">Enviar</button>
-            </form>
-        </div>
+<?php
+include './template/header.php';
+?>
+
+<main class="conteudo-principal container d-flex justify-content-center align-items-center">
+    <section class="formulario bg-white p-4">
+        <h1 class="fs-2 text-center">Formulario</h1>
+        <form action="./impressao.php" method="POST">
+            <div class="mb-3">
+                <label for="txtNome" class="form-label">Nome</label>
+                <input name="txtNome" type="text" class="form-control" id="txtNome" placeholder="">
+            </div>
+            <div class="mb-3">
+                <label for="txtTelefone" class="form-label">Telefone</label>
+                <input name="txtTelefone" type="numeber" class="form-control" id="txtTelefone" placeholder="(xx) xxxxx-xxxx">
+            </div>
+            <div class="mb-3">
+                <label for="txtUsuario" class="form-label">Usuario</label>
+                <input name="txtUsuario" type="text" class="form-control" id="txtUsuario" placeholder="">
+            </div>
+            <div class="mb-3">
+                <label for="txtSenha" class="form-label">Senha</label>
+                <input name="txtSenha" type="password" class="form-control" id="txtSenha" placeholder="">
+            </div>
+            <div class="mb-3">
+                <label for="txtConfirmarSenha" class="form-label">Confirmar Senha</label>
+                <input name="txtConfirmarSenha" type="password" class="form-control" id="txtConfirmarSenha" placeholder="">
+            </div>
+            <div class="group-button d-flex justify-content-end">
+                <button class="btn btn-primary" type="submit">Enviar</button>
+            </div>
+        </form>
     </section>
-</body>
-</html>
+</main>
+<?php
+include './template/footer.php';
+?>
