@@ -15,4 +15,25 @@ $password = '';
 
 $conn = new PDO($dsn, $usuario, $password);
 
-$scriptCadastro = "";
+$scriptCadastro = "INSERT INTO 
+    tb_cadastro (
+        nome, 
+        telefone, 
+        usuario, 
+        senha
+    ) 
+    VALUES (
+        :nome, 
+        :telefone, 
+        :usuario, 
+        :senha
+    )";
+
+$scriptPreparado = $conn->prepare($scriptCadastro);
+
+$scriptPreparado->execute([
+        ':nome' => $formNome,
+        ':telefone' => $formTelefone,
+        ':usuario' => $formUsuario,
+        ':senha' => $formSenha
+    ]);
