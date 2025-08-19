@@ -7,7 +7,7 @@ $senha = '';
 
 $conexaoBanco = new PDO($dsn, $usuario, $senha);
 
-$scriptConsulta = 'SELECT * FROM tb_usuario';
+$scriptConsulta = 'SELECT * FROM tb_cadastro';
 
 $resultadoConsulta = $conexaoBanco->query($scriptConsulta)->fetchAll();
 

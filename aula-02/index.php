@@ -5,7 +5,7 @@ include './template/header.php';
 <main class="conteudo-principal container d-flex justify-content-center align-items-center">
     <section class="formulario bg-white p-4">
         <h1 class="fs-2 text-center">Formulario</h1>
-        <form action="./impressao.php" method="POST">
+        <form action="./form-cadastro.php" method="POST">
             <div class="mb-3">
                 <label for="txtNome" class="form-label">Nome</label>
                 <input name="txtNome" type="text" class="form-control" id="txtNome" placeholder="">

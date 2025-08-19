@@ -9,7 +9,7 @@
 
     $id = (int) $_GET['idConsulta'];
 
-    $scriptExibir = "SELECT * FROM tb_usuario where id = $id";
+    $scriptExibir = "SELECT * FROM tb_cadastro where id = $id";
 
     $resultadoExibir = $conexaoBanco->query($scriptExibir)->fetch();
 
