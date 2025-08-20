@@ -34,8 +34,8 @@ $resultadoConsulta = $conexaoBanco->query($scriptConsulta)->fetchAll();
                             <td><?= $linha['usuario'] ?></td>
                             <td>
                                 <a href="./impressao.php?idConsulta=<?= $linha['id'] ?>" class="btn btn-primary btn-sm">Abrir</a>
-                                <a class="btn btn-warning btn-sm">Editar</a>
-                                <a class="btn btn-danger btn-sm">Excluir</a>
+                                <a href="./index.php?id=<?= $linha['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="./form-delete.php?idDelete=<?= $linha['id'] ?>" class="btn btn-danger btn-sm">Excluir</a>
                             </td>
                         </tr>
                     <?php } ?>
