@@ -8,20 +8,20 @@ if ($_POST) {
     $descricao = $_POST['descricao'];
     $data_hora = $_POST['data_hora'];
 
-    $check_sql = "SELECT * FROM reservas 
+    $check_sql = "SELECT * FROM tb_reservas 
                   WHERE sala_id = '$sala_id' 
                   AND data_hora = '$data_hora'";
     $check_result = $conn->query($check_sql);
 
     if ($check_result->num_rows > 0) {
         echo "<script>
-                alert('⚠️ Já existe uma reserva para esta sala neste horário!');
+                alert('⚠️ Já existe uma reserva para esta sala neste horário! ⚠️');
                 window.location.href = 'index.php';
               </script>";
         exit;
     }
 
-    $sql = "INSERT INTO reservas (sala_id, docente, turma, descricao, data_hora) 
+    $sql = "INSERT INTO tb_reservas (sala_id, docente, turma, descricao, data_hora) 
             VALUES ('$sala_id', '$docente', '$turma', '$descricao', '$data_hora')";
     $conn->query($sql);
 }
