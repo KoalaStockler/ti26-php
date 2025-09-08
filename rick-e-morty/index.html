@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rick e Morty</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">Rick e Morty</h1>
+
+        <!-- Barra de Pesquisa e Filtro -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8 d-flex gap-2 flex-column flex-sm-row">
+                <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar..." />
+                <select id="filterSelect" class="form-select" style="max-width: 200px">
+                    <option value="name">Nome</option>
+                    <option value="id">ID</option>
+                    <option value="status">Status</option>
+                    <option value="species">Espécie</option>
+                    <option value="gender">Gênero</option>
+                    <option value="origin">Origem</option>
+                    <option value="location">Localização</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="personagem-container" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"></div>
+    </div>
+
+    <script>
+        const container = document.getElementById('personagem-container')
+        const searchInput = document.getElementById('searchInput')
+        const filterSelect = document.getElementById('filterSelect')
+        let personagens = []
+
+        function procurarPersonagem(id) {
+            return fetch("https://rickandmortyapi.com/api/character/" + id)
+                .then(resposta => resposta.json())
+        }
+
+        function statusBadgeClass(status) {
+            if (status === "Alive") return "badge-status-alive"
+            if (status === "Dead") return "badge-status-dead"
+            return "badge-status-unknown"
+        }
+
+        function renderizarPersonagens(lista) {
+            container.innerHTML = ''
+
+            lista.forEach(personagem => {
+                const { name, id, image, status, species, gender, origin, location } = personagem
+
+                const coluna = document.createElement('div')
+                coluna.className = 'col'
+
+                coluna.innerHTML = `
+                <div class="card h-100">
+                    <img src="${image}" alt="${name}" class="img-fluid">
+                    <div class="card-body text-center">
+                        <div class="card-subtitle">ID #${id}</div>
+                        <h5 class="card-title">
+                            ${name}
+                            <span class="badge-custom ${statusBadgeClass(status)}">${status}</span>
+                        </h5>
+                        <div class="info-badges">
+                            <span class="badge-custom bg-secondary text-white">${species}</span>
+                            <span class="badge-custom bg-secondary text-white">${gender}</span>
+                        </div>
+                        <div class="text-info-line"><strong>Origem:</strong> ${origin.name}</div>
+                        <div class="text-info-line"><strong>Localização:</strong> ${location.name}</div>
+                    </div>
+                </div>
+            `
+                container.appendChild(coluna)
+            })
+        }
+
+        async function carregarPersonagem() {
+            for (let i = 1; i <= 826; i++) {
+                const personagem = await procurarPersonagem(i)
+                personagens.push(personagem)
+            }
+            renderizarPersonagens(personagens)
+        }
+
+        function aplicarFiltro() {
+            const termo = searchInput.value.toLowerCase()
+            const filtro = filterSelect.value
+
+            const filtrados = personagens.filter(p => {
+                if (filtro === "name") return p.name.toLowerCase().includes(termo)
+                if (filtro === "id") return p.id.toString().includes(termo)
+                if (filtro === "status") return p.status.toLowerCase().includes(termo)
+                if (filtro === "species") return p.species.toLowerCase().includes(termo)
+                if (filtro === "gender") return p.gender.toLowerCase().includes(termo)
+                if (filtro === "origin") return p.origin.name.toLowerCase().includes(termo)
+                if (filtro === "location") return p.location.name.toLowerCase().includes(termo)
+                return true
+            })
+
+            renderizarPersonagens(filtrados)
+        }
+
+        searchInput.addEventListener('input', aplicarFiltro)
+        filterSelect.addEventListener('change', aplicarFiltro)
+
+        carregarPersonagem()
+    </script>
+
+</body>
+
+</html>
