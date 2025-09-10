@@ -1,0 +1,76 @@
+body {
+    background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+h1 {
+    font-weight: 800;
+    color: #212529;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    border-radius: 20px;
+    border: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.card-numbers {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+}
+
+.card-writing {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    color: white;
+}
+
+.card-database {
+    background: linear-gradient(135deg, #fc4a1a, #f7b733);
+    color: white;
+}
+
+.btn {
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.form-control:focus {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.25);
+}
+
+.result-card {
+    background: #ffffffaa;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+ul.list-group-item {
+    border-radius: 12px;
+    margin-bottom: 6px;
+    transition: all 0.3s;
+}
+
+ul.list-group-item:hover {
+    background: #f0f0f0;
+    transform: translateX(3px);
+}
