@@ -27,7 +27,7 @@ if (isset($post['excluir_id'])) {
 // Listar docentes atualizados
 $docentes = listarDocentes();
 
-// Funções de Números
+// ====== Funções de números (existentes) ======
 $boasVindasInput = $post['nome'] ?? '';
 $boasVindas = $boasVindasInput ? boasVindas($boasVindasInput) : '';
 
@@ -44,10 +44,10 @@ $maior3 = $post['maior3'] ?? '';
 $maior = ($maior1 != '' && $maior2 != '' && $maior3 != '') ? maiorNumero($maior1, $maior2, $maior3) : '';
 
 $mediaArray = $post['media'] ?? '';
-$media = $mediaArray ? media(explode(',', $mediaArray)) : '';
+$media = $mediaArray ? media(array_map('trim', explode(',', $mediaArray))) : '';
 
 $tabuadaValor = $post['tabuada'] ?? '';
-$tabuada = $tabuadaValor ? tabuada($tabuadaValor) : '';
+$tabuada = $tabuadaValor !== '' ? tabuada($tabuadaValor) : '';
 
 $cpfInput = $post['cpf'] ?? '';
 $cpfFormatado = $cpfInput ? formatarCPF($cpfInput) : '';
@@ -56,7 +56,7 @@ $real = $post['real'] ?? '';
 $cotacao = $post['cotacao'] ?? '';
 $conversao = ($real != '' && $cotacao != '') ? converterRealParaDolar($real, $cotacao) : '';
 
-// Funções de Escrita
+// ====== Funções de escrita (existentes) ======
 $stringInverter = $post['inverter'] ?? '';
 $invertida = $stringInverter ? inverterString($stringInverter) : '';
 
@@ -66,10 +66,56 @@ $qtdVogais = $stringVogais ? contarVogais($stringVogais) : '';
 $senhaTamanho = $post['senha_tamanho'] ?? '';
 $senha = $senhaTamanho ? gerarSenha($senhaTamanho) : '';
 
-// Busca docente por ID
+// ====== Busca docente por ID ======
 $buscaId = $post['docente_id'] ?? '';
 $docente1 = $buscaId ? buscarDocentePorId($buscaId) : null;
+
+/* -------------------------
+   Novas atividades (17 a 23)
+   ------------------------- */
+
+// 17. Aumento salarial
+$aumentoNome = $post['aumento_nome'] ?? '';
+$aumentoSalario = $post['aumento_salario'] ?? '';
+$novoSalario = ($aumentoSalario != '') ? aumentoSalarial($aumentoNome, $aumentoSalario) : '';
+
+// 18. Vogal ou consoante
+$letraVC = $post['letra_vc'] ?? '';
+$vogalConsoante = ($letraVC != '') ? tipoLetra($letraVC) : '';
+
+// 19. Filtrar pares (array)
+$arrayParesInput = $post['array_pares'] ?? '';
+$paresResult = [];
+if ($arrayParesInput != '') {
+    $arr = array_filter(array_map('trim', explode(',', $arrayParesInput)), fn($v) => $v != '');
+    $paresResult = filtrarPares($arr);
+}
+
+// 20. Segundo maior (array)
+$arraySegundoInput = $post['array_segundo_maior'] ?? '';
+$segundoMaiorResult = null;
+if ($arraySegundoInput != '') {
+    $arr2 = array_filter(array_map('trim', explode(',', $arraySegundoInput)), fn($v) => $v != '');
+    $segundoMaiorResult = segundoMaior($arr2);
+}
+
+// 21. Strings que começam com vogal
+$stringsVogaisInput = $post['strings_comecam_vogal'] ?? '';
+$stringsVogaisResult = [];
+if ($stringsVogaisInput != '') {
+    $arrStrings = array_filter(array_map('trim', explode(',', $stringsVogaisInput)), fn($v) => $v != '');
+    $stringsVogaisResult = filtrarStringsVogais($arrStrings);
+}
+
+// 22. Cubo
+$numeroCubo = $post['numero_cubo'] ?? '';
+$cuboResult = ($numeroCubo != '') ? cubo($numeroCubo) : '';
+
+// 23. Raiz quadrada
+$numeroRaiz = $post['numero_raiz'] ?? '';
+$raizResult = ($numeroRaiz != '') ? raizQuadrada($numeroRaiz) : '';
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -91,61 +137,118 @@ $docente1 = $buscaId ? buscarDocentePorId($buscaId) : null;
                 <div class="card-body">
                     <div class="mb-4">
                         <label>Seu nome para boas-vindas:</label>
-                        <input type="text" name="nome" class="form-control" value="<?= $boasVindasInput ?>">
-                        <?php if ($boasVindas) echo "<div class='result-card'> $boasVindas </div>"; ?>
+                        <input type="text" name="nome" class="form-control" value="<?= ($boasVindasInput) ?>">
+                        <?php if ($boasVindas) echo "<div class='result-card'> " . ($boasVindas) . " </div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Soma de dois números:</label>
                         <div class="d-flex gap-2">
-                            <input type="number" name="soma_a" placeholder="Número 1" value="<?= $somaA ?>" class="form-control">
-                            <input type="number" name="soma_b" placeholder="Número 2" value="<?= $somaB ?>" class="form-control">
+                            <input type="number" name="soma_a" placeholder="Número 1" value="<?= ($somaA) ?>" class="form-control">
+                            <input type="number" name="soma_b" placeholder="Número 2" value="<?= ($somaB) ?>" class="form-control">
                         </div>
-                        <?php if ($soma != '') echo "<div class='result-card'>Resultado: $soma</div>"; ?>
+                        <?php if ($soma != '') echo "<div class='result-card'>Resultado: " . ($soma) . "</div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Par ou Ímpar:</label>
-                        <input type="number" name="par_impar" value="<?= $parImparValor ?>" class="form-control">
-                        <?php if ($parImpar) echo "<div class='result-card'>Resultado: $parImpar</div>"; ?>
+                        <input type="number" name="par_impar" value="<?= ($parImparValor) ?>" class="form-control">
+                        <?php if ($parImpar) echo "<div class='result-card'>Resultado: " . ($parImpar) . "</div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Maior número entre três valores:</label>
                         <div class="d-flex gap-2">
-                            <input type="number" name="maior1" placeholder="Valor 1" value="<?= $maior1 ?>" class="form-control">
-                            <input type="number" name="maior2" placeholder="Valor 2" value="<?= $maior2 ?>" class="form-control">
-                            <input type="number" name="maior3" placeholder="Valor 3" value="<?= $maior3 ?>" class="form-control">
+                            <input type="number" name="maior1" placeholder="Valor 1" value="<?= ($maior1) ?>" class="form-control">
+                            <input type="number" name="maior2" placeholder="Valor 2" value="<?= ($maior2) ?>" class="form-control">
+                            <input type="number" name="maior3" placeholder="Valor 3" value="<?= ($maior3) ?>" class="form-control">
                         </div>
-                        <?php if ($maior != '') echo "<div class='result-card'>Resultado: $maior</div>"; ?>
+                        <?php if ($maior != '') echo "<div class='result-card'>Resultado: " . ($maior) . "</div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Média de números (separados por vírgula):</label>
-                        <input type="text" name="media" value="<?= $mediaArray ?>" class="form-control">
-                        <?php if ($media != '') echo "<div class='result-card'>Resultado: $media</div>"; ?>
+                        <input type="text" name="media" value="<?= ($mediaArray) ?>" class="form-control">
+                        <?php if ($media != '') echo "<div class='result-card'>Resultado: " . ($media) . "</div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Tabuada de um número:</label>
-                        <input type="number" name="tabuada" value="<?= $tabuadaValor ?>" class="form-control">
-                        <?php if ($tabuada) echo "<div class='result-card'><pre>$tabuada</pre></div>"; ?>
+                        <input type="number" name="tabuada" value="<?= ($tabuadaValor) ?>" class="form-control">
+                        <?php if ($tabuada) echo "<div class='result-card'><pre>" . ($tabuada) . "</pre></div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Formatar CPF:</label>
-                        <input type="text" name="cpf" value="<?= $cpfInput ?>" class="form-control" placeholder="12345678901">
-                        <?php if ($cpfFormatado) echo "<div class='result-card'>$cpfFormatado</div>"; ?>
+                        <input type="text" name="cpf" value="<?= ($cpfInput) ?>" class="form-control" placeholder="12345678901">
+                        <?php if ($cpfFormatado) echo "<div class='result-card'>" . ($cpfFormatado) . "</div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Converter Real para Dólar:</label>
                         <div class="d-flex gap-2">
-                            <input type="number" name="real" placeholder="Valor em R$" value="<?= $real ?>" class="form-control">
-                            <input type="number" step="0.01" name="cotacao" placeholder="Cotação do dólar" value="<?= $cotacao ?>" class="form-control">
+                            <input type="number" name="real" placeholder="Valor em R$" value="<?= ($real) ?>" class="form-control">
+                            <input type="number" step="0.01" name="cotacao" placeholder="Cotação do dólar" value="<?= ($cotacao) ?>" class="form-control">
                         </div>
-                        <?php if ($conversao != '') echo "<div class='result-card'>Resultado: $" . number_format($conversao, 2) . " USD</div>"; ?>
+                        <?php if ($conversao != '') echo "<div class='result-card'>Resultado: $" . number_format($conversao, 2, ',', '.') . " USD</div>"; ?>
                     </div>
+
+                    <!-- 17 Aumento -->
+                    <div class="mb-3">
+                        <label>Aumento salarial (nome + salário):</label>
+                        <div class="d-flex gap-2">
+                            <input type="text" name="aumento_nome" placeholder="Nome do funcionário" value="<?= ($aumentoNome) ?>" class="form-control">
+                            <input type="number" step="0.01" name="aumento_salario" placeholder="Salário" value="<?= ($aumentoSalario) ?>" class="form-control">
+                        </div>
+                        <?php if ($novoSalario != ''): ?>
+                            <div class="result-card"><?= ($novoSalario) ?></div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- 19 Filtrar pares -->
+                    <div class="mb-3">
+                        <label>Filtrar números pares (digite valores separados por vírgula):</label>
+                        <input type="text" name="array_pares" placeholder="ex: 1,2,3,4,10" value="<?= ($arrayParesInput) ?>" class="form-control">
+                        <?php if (!empty($paresResult)) echo "<div class='result-card'>Pares: " . (implode(', ', $paresResult)) . "</div>"; ?>
+                    </div>
+
+                    <!-- 20 Segundo maior -->
+                    <div class="mb-3">
+                        <label>Segundo maior número (valores separados por vírgula):</label>
+                        <input type="text" name="array_segundo_maior" placeholder="ex: 5,8,3,10" value="<?= ($arraySegundoInput) ?>" class="form-control">
+                        <?php
+                        if ($arraySegundoInput != '') {
+                            if ($segundoMaiorResult == null) {
+                                echo "<div class='result-card text-danger'>Não foi possível determinar o segundo maior (menos de 2 números válidos).</div>";
+                            } else {
+                                echo "<div class='result-card'>Segundo maior: " . ($segundoMaiorResult) . "</div>";
+                            }
+                        }
+                        ?>
+                    </div>
+
+                    <!-- 22 Cubo -->
+                    <div class="mb-3">
+                        <label>Cubo de um número:</label>
+                        <input type="number" step="0.01" name="numero_cubo" placeholder="Número" value="<?= ($numeroCubo) ?>" class="form-control">
+                        <?php if ($cuboResult != '') echo "<div class='result-card'>Cubo: " . ($cuboResult) . "</div>"; ?>
+                    </div>
+
+                    <!-- 23 Raiz quadrada -->
+                    <div class="mb-3">
+                        <label>Raiz quadrada de um número:</label>
+                        <input type="number" step="0.01" name="numero_raiz" placeholder="Número" value="<?= ($numeroRaiz) ?>" class="form-control">
+                        <?php
+                        if ($numeroRaiz != '') {
+                            if ($raizResult == null) {
+                                echo "<div class='result-card text-danger'>Número negativo — sem raiz quadrada real.</div>";
+                            } else {
+                                echo "<div class='result-card'>Raiz quadrada: " . (number_format($raizResult, 6, ',', '.')) . "</div>";
+                            }
+                        }
+                        ?>
+                    </div>
+
                 </div>
             </div>
 
@@ -155,20 +258,34 @@ $docente1 = $buscaId ? buscarDocentePorId($buscaId) : null;
                 <div class="card-body">
                     <div class="mb-4">
                         <label>Inverter string:</label>
-                        <input type="text" name="inverter" value="<?= $stringInverter ?>" class="form-control">
-                        <?php if ($invertida) echo "<div class='result-card'>Resultado: $invertida</div>"; ?>
+                        <input type="text" name="inverter" value="<?= ($stringInverter) ?>" class="form-control">
+                        <?php if ($invertida) echo "<div class='result-card'>Resultado: " . ($invertida) . "</div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Contar vogais:</label>
-                        <input type="text" name="vogais" value="<?= $stringVogais ?>" class="form-control">
-                        <?php if ($qtdVogais) echo "<div class='result-card'>Resultado: $qtdVogais</div>"; ?>
+                        <input type="text" name="vogais" value="<?= ($stringVogais) ?>" class="form-control">
+                        <?php if ($qtdVogais != '') echo "<div class='result-card'>Resultado: " . ($qtdVogais) . "</div>"; ?>
                     </div>
 
                     <div class="mb-4">
                         <label>Gerar senha:</label>
-                        <input type="number" name="senha_tamanho" placeholder="Tamanho" value="<?= $senhaTamanho ?>" class="form-control">
-                        <?php if ($senha) echo "<div class='result-card'>Senha: $senha</div>"; ?>
+                        <input type="number" name="senha_tamanho" placeholder="Tamanho" value="<?= ($senhaTamanho) ?>" class="form-control">
+                        <?php if ($senha) echo "<div class='result-card'>Senha: " . ($senha) . "</div>"; ?>
+                    </div>
+
+                    <!-- 18 Vogal/consoante -->
+                    <div class="mb-3">
+                        <label>Verificar se uma letra é vogal ou consoante:</label>
+                        <input type="text" name="letra_vc" maxlength="2" placeholder="Digite uma letra" value="<?= ($letraVC) ?>" class="form-control">
+                        <?php if ($vogalConsoante != '') echo "<div class='result-card'>Resultado: " . ($vogalConsoante) . "</div>"; ?>
+                    </div>
+
+                    <!-- 21 Strings que começam com vogal -->
+                    <div class="mb-3">
+                        <label>Strings que começam com vogal (separadas por vírgula):</label>
+                        <input type="text" name="strings_comecam_vogal" placeholder="ex: abacate,bola,uva" value="<?= ($stringsVogaisInput) ?>" class="form-control">
+                        <?php if (!empty($stringsVogaisResult)) echo "<div class='result-card'>Resultado: " . (implode(', ', $stringsVogaisResult)) . "</div>"; ?>
                     </div>
                 </div>
             </div>
@@ -182,8 +299,8 @@ $docente1 = $buscaId ? buscarDocentePorId($buscaId) : null;
                     <ul class="list-group mb-4">
                         <?php foreach ($docentes as $docente): ?>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <?= $docente['id'] ?> - <?= $docente['nome'] ?> (<?= $docente['area'] ?>) - RA: <?= $docente['ra_docente'] ?>
-                                <button type="submit" name="excluir_id" value="<?= $docente['id'] ?>" class="btn btn-sm btn-danger">Excluir</button>
+                                <?= ($docente['id']) ?> - <?= ($docente['nome']) ?> (<?= ($docente['area']) ?>) - RA: <?= ($docente['ra_docente']) ?>
+                                <button type="submit" name="excluir_id" value="<?= ($docente['id']) ?>" class="btn btn-sm btn-danger">Excluir</button>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -197,9 +314,9 @@ $docente1 = $buscaId ? buscarDocentePorId($buscaId) : null;
 
                     <!-- Buscar docente por ID -->
                     <h5 class="mb-3">Buscar docente por ID:</h5>
-                    <input type="number" name="docente_id" value="<?= $buscaId ?>" class="form-control mb-2">
+                    <input type="number" name="docente_id" value="<?= ($buscaId) ?>" class="form-control mb-2">
                     <?php if ($docente1): ?>
-                        <div class="result-card mt-2"><strong><?= $docente1['nome'] ?></strong> - <?= $docente1['area'] ?> - RA: <?= $docente1['ra_docente'] ?></div>
+                        <div class="result-card mt-2"><strong><?= ($docente1['nome']) ?></strong> - <?= ($docente1['area']) ?> - RA: <?= ($docente1['ra_docente']) ?></div>
                     <?php elseif ($buscaId !== ''): ?>
                         <div class="result-card mt-2 text-danger">Docente não encontrado.</div>
                     <?php endif; ?>
