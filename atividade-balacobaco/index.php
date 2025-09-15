@@ -5,7 +5,6 @@ include "funcoes_banco.php";
 
 $post = $_POST;
 
-// Funções de Banco de Dados
 // Inserir docente
 if (isset($post['acao']) && $post['acao'] == 'inserir') {
     $novoNome = $post['novo_nome'] ?? '';
@@ -83,7 +82,7 @@ $docente1 = $buscaId ? buscarDocentePorId($buscaId) : null;
 
 <body>
     <div class="container py-5">
-        <h1 class="text-center mb-5">✨ Atividade do Balacobaco ✨</h1>
+        <h1 class="text-center mb-5"> Atividade do Balacobaco </h1>
 
         <form method="POST">
             <!-- Funções Numéricas -->
@@ -93,7 +92,7 @@ $docente1 = $buscaId ? buscarDocentePorId($buscaId) : null;
                     <div class="mb-4">
                         <label>Seu nome para boas-vindas:</label>
                         <input type="text" name="nome" class="form-control" value="<?= $boasVindasInput ?>">
-                        <?php if ($boasVindas) echo "<div class='result-card'>✨ $boasVindas ✨</div>"; ?>
+                        <?php if ($boasVindas) echo "<div class='result-card'> $boasVindas </div>"; ?>
                     </div>
 
                     <div class="mb-4">
