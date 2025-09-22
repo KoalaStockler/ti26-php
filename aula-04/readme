@@ -1,0 +1,64 @@
+
+---
+
+## ⚙️ Funcionamento
+
+### 1. `index.php`
+- Página inicial do sistema.
+- Exibe um **formulário** para cadastrar um novo animal, solicitando:
+  - Nome do animal.
+  - Foto do animal.
+- Após o envio, os dados são enviados para `aux_upload.php`.
+- Também lista todos os animais já cadastrados no banco, exibindo suas fotos e nomes em **cards**.
+
+---
+
+### 2. `aux_upload.php`
+- Recebe os dados enviados pelo formulário (`POST`).
+- Processa o upload da foto:
+  - Gera um novo nome único para o arquivo.
+  - Move a imagem para a pasta `img/animais/`.
+- Registra no banco de dados as informações do animal utilizando a classe `Animais`.
+- Exibe mensagem de sucesso após o cadastro.
+
+> **Observação:**  
+> No código atual, há um pequeno erro em:
+> ```php
+> if($_SERVER['REQUEST_METHOD'] = 'POST' && isset($_POST['cadastro'])){
+> ```
+> O correto seria `==` para comparação:
+> ```php
+> if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])){
+> ```
+
+---
+
+### 3. `class/Animais.php`
+Classe responsável pela conexão com o banco de dados e operações CRUD.
+
+- **Conexão:**  
+  Configurada via `PDO` com o banco `db_aula04`.
+
+- **Métodos:**
+  - `consultarAnimais()` → Retorna todos os registros da tabela `tb_animais`.
+  - `consultarAnimaisById($id)` → Retorna os dados de um animal específico.
+  - `cadastroAnimais($nome_animal, $nome_arquivo, $tipo)` → Insere um novo registro na tabela.
+
+---
+
+## 🗄️ Banco de Dados
+
+Crie a tabela `tb_animais` no banco `db_aula04`:
+
+```sql
+CREATE DATABASE db_aula04;
+
+USE db_aula04;
+
+CREATE TABLE tb_animais (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_animal VARCHAR(100) NOT NULL,
+    nome_arquivo VARCHAR(255) NOT NULL,
+    tipo_arquivo VARCHAR(10) NOT NULL,
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
